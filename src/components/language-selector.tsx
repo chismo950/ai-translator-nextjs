@@ -17,6 +17,7 @@ interface LanguageSelectorProps {
   placeholder?: string
   allowDetect?: boolean
   disabled?: boolean
+  compact?: boolean
 }
 
 export function LanguageSelector({
@@ -24,11 +25,17 @@ export function LanguageSelector({
   onChange,
   placeholder = "Select language",
   allowDetect = false,
-  disabled = false
+  disabled = false,
+  compact = false
 }: LanguageSelectorProps) {
   const getDisplayText = () => {
     if (!value) return placeholder
-    if (value === "auto" && allowDetect) return "Detect language"
+    if (value === "auto" && allowDetect) {
+      return compact ? "Auto" : "Detect language"
+    }
+    if (compact) {
+      return value.toUpperCase()
+    }
     return languages[value as SupportedLanguage] || value
   }
 
@@ -37,11 +44,14 @@ export function LanguageSelector({
       <DropdownMenuTrigger asChild>
         <Button
           variant="outline"
-          className="w-full justify-between min-w-[140px]"
+          className={compact
+            ? "justify-between min-w-[80px] max-w-[120px] px-2 h-8 text-xs"
+            : "w-full justify-between min-w-[140px]"
+          }
           disabled={disabled}
         >
           <span className="truncate">{getDisplayText()}</span>
-          <ChevronDown className="h-4 w-4 shrink-0 opacity-50" />
+          <ChevronDown className={compact ? "h-3 w-3 shrink-0 opacity-50" : "h-4 w-4 shrink-0 opacity-50"} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 max-h-[300px] overflow-y-auto">
