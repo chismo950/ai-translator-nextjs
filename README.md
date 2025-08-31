@@ -36,7 +36,7 @@ A beautiful, responsive AI translation interface built with Next.js 15, TypeScri
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
+git clone git@github.com:chismo950/ai-translator-nextjs.git
 cd ai-translator-nextjs-cursor
 
 # Install dependencies
