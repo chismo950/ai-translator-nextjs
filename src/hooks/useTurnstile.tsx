@@ -1,6 +1,7 @@
 "use client"
 
 import { useCallback, useRef, useState } from "react";
+import { TURNSTILE_CONFIG } from "@/lib/config";
 
 declare global {
   interface Window {
@@ -43,7 +44,7 @@ export function useTurnstile() {
 
         const id = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
-          action: "web-client",
+          action: TURNSTILE_CONFIG.ACTION,
           callback: (t: string) => {
             setToken(t || null);
             setLoading(false);
@@ -56,8 +57,8 @@ export function useTurnstile() {
             setToken(null);
             setLoading(false);
           },
-          theme: theme || "auto",
-          size: "normal",
+          theme: theme || TURNSTILE_CONFIG.THEME,
+          size: TURNSTILE_CONFIG.SIZE,
         });
         setWidgetId(id);
         setReady(true);

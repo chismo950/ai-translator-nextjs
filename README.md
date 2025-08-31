@@ -43,23 +43,27 @@ cd ai-translator-nextjs-cursor
 pnpm install
 ```
 
-### 2. Environment Setup
+### 2. Configuration Setup
 
-Create a `.env.local` file in the root directory:
+The application uses a centralized configuration system in `src/lib/config.ts`. Update the API base URL:
 
-```env
-# API Configuration (Required)
-NEXT_PUBLIC_API_BASE=http://localhost:8080
-
-# Development settings
-NODE_ENV=development
+```typescript
+// src/lib/config.ts
+export const API_CONFIG = {
+  // Update this URL to your backend API
+  BASE_URL: "https://your-api-domain.com",
+  // ... other settings
+} as const;
 ```
 
-**Important Environment Variables:**
+**Key Configuration Options:**
 
-- `NEXT_PUBLIC_API_BASE`: Your backend API URL (required)
+- `API_CONFIG.BASE_URL`: Your backend API URL
   - Local development: `http://localhost:8080`
   - Production: Your deployed API URL
+- `TRANSLATION_CONFIG.MAX_CHARACTERS`: Character limit for translations
+- `TRANSLATION_CONFIG.TEXTAREA`: Text area rows configuration
+- `TURNSTILE_CONFIG`: Cloudflare Turnstile widget settings
 
 ### 3. Backend Requirements
 
@@ -107,11 +111,17 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Character Limits
 
-Edit character limits in `src/components/translator.tsx`:
+Edit character limits in `src/lib/config.ts`:
 
 ```typescript
-const MAX_CHARACTERS = 5000; // Hard limit
-const SOFT_LIMIT = 4000; // Warning threshold
+export const TRANSLATION_CONFIG = {
+  MAX_CHARACTERS: 5000, // Hard limit
+  SOFT_LIMIT: 4000, // Warning threshold
+  TEXTAREA: {
+    MIN_ROWS: 4,
+    MAX_ROWS: 15,
+  },
+} as const;
 ```
 
 ### Supported Languages
@@ -205,13 +215,15 @@ pnpm build
 pnpm start
 ```
 
-### Environment Variables
+### Configuration for Production
 
-Set these in your production environment:
+Update `src/lib/config.ts` with your production settings:
 
-```env
-NEXT_PUBLIC_API_BASE=https://your-api-domain.com
-NODE_ENV=production
+```typescript
+export const API_CONFIG = {
+  BASE_URL: "https://your-production-api.com",
+  // ... other production settings
+} as const;
 ```
 
 ### Deployment Platforms

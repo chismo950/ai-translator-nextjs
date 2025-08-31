@@ -4,6 +4,7 @@ import * as React from "react"
 import { useEffect, useRef } from "react"
 import { Textarea } from "@/components/ui/textarea"
 import { cn } from "@/lib/utils"
+import { TRANSLATION_CONFIG } from "@/lib/config"
 
 interface AutoResizeTextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -14,7 +15,7 @@ interface AutoResizeTextareaProps
 export const AutoResizeTextarea = React.forwardRef<
   HTMLTextAreaElement,
   AutoResizeTextareaProps
->(({ className, minRows = 3, maxRows = 10, ...props }, ref) => {
+>(({ className, minRows = TRANSLATION_CONFIG.TEXTAREA.MIN_ROWS, maxRows = TRANSLATION_CONFIG.TEXTAREA.MAX_ROWS, ...props }, ref) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const combinedRef = ref || textareaRef
 

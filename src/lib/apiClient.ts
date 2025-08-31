@@ -1,4 +1,6 @@
 // API client with Turnstile pass management
+import { getApiBaseUrl, getFullApiUrl, API_CONFIG } from "./config";
+
 let passToken: string | null = null;
 
 export function setPass(token: string | null) {
@@ -14,9 +16,7 @@ export function getPass() {
 }
 
 function getApiBase(): string {
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE;
-  if (apiBase) return apiBase;
-  return "http://localhost:8080";
+  return getApiBaseUrl();
 }
 
 /**
@@ -26,13 +26,15 @@ export async function getTurnstileSiteKey(): Promise<{
   siteKey: string;
   headerName: string;
 }> {
-  const base = getApiBase();
-  const res = await fetch(`${base}/_turnstile/sitekey`, {
-    cache: "no-store",
-    headers: {
-      Accept: "application/json",
-    },
-  });
+  const res = await fetch(
+    getFullApiUrl(API_CONFIG.ENDPOINTS.TURNSTILE_SITEKEY),
+    {
+      cache: "no-store",
+      headers: {
+        Accept: "application/json",
+      },
+    }
+  );
 
   if (!res.ok) {
     throw new Error(`Failed to fetch Turnstile site key: ${res.status}`);
@@ -66,7 +68,7 @@ export async function postTranslate(
     if (t) headers[opts.turnstileHeaderName || "CF-Turnstile-Token"] = t;
   }
 
-  const res = await fetch(`${base}/v1/translate`, {
+  const res = await fetch(getFullApiUrl(API_CONFIG.ENDPOINTS.TRANSLATE), {
     method: "POST",
     headers,
     body: JSON.stringify(body),

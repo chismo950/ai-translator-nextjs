@@ -10,13 +10,14 @@ import { useToast } from "@/hooks/use-toast"
 import { useTurnstile } from "@/hooks/useTurnstile"
 import { useLanguage } from "@/hooks/useLanguage"
 import { getTurnstileSiteKey, postTranslate, getPass, TranslationResponse } from "@/lib/apiClient"
+import { TRANSLATION_CONFIG, TURNSTILE_CONFIG } from "@/lib/config"
 import { LanguageSelector } from "./language-selector"
 import { CharacterCounter } from "./character-counter"
 import { AutoResizeTextarea } from "./auto-resize-textarea"
 import { useTheme } from "next-themes"
 
-const MAX_CHARACTERS = 5000
-const SOFT_LIMIT = 4000
+const MAX_CHARACTERS = TRANSLATION_CONFIG.MAX_CHARACTERS
+const SOFT_LIMIT = TRANSLATION_CONFIG.SOFT_LIMIT
 
 export function Translator() {
   const { t } = useLanguage()
@@ -250,8 +251,8 @@ export function Translator() {
             onChange={(e) => setSourceText(e.target.value)}
             placeholder={t('input.placeholder')}
             maxLength={MAX_CHARACTERS}
-            minRows={4}
-            maxRows={15}
+            minRows={TRANSLATION_CONFIG.TEXTAREA.MIN_ROWS}
+            maxRows={TRANSLATION_CONFIG.TEXTAREA.MAX_ROWS}
             className="border-0 p-3 focus-visible:ring-0 text-base resize-none"
           />
 
@@ -300,8 +301,8 @@ export function Translator() {
             value={targetText}
             placeholder={t('output.placeholder')}
             readOnly
-            minRows={4}
-            maxRows={15}
+            minRows={TRANSLATION_CONFIG.TEXTAREA.MIN_ROWS}
+            maxRows={TRANSLATION_CONFIG.TEXTAREA.MAX_ROWS}
             className="border-0 p-3 focus-visible:ring-0 text-base resize-none bg-transparent"
           />
 
