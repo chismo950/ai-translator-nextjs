@@ -198,29 +198,35 @@ export function Translator() {
   return (
     <div className="w-full max-w-4xl mx-auto p-4 space-y-4">
       {/* Language Selection */}
-      <div className="flex items-center gap-2 flex-wrap">
-        <LanguageSelector
-          value={sourceLang}
-          onChange={setSourceLang}
-          placeholder={t('language.source')}
-          allowDetect
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-3 lg:gap-4 lg:items-center">
+        <div className="flex justify-center lg:justify-end">
+          <LanguageSelector
+            value={sourceLang}
+            onChange={setSourceLang}
+            placeholder={t('language.source')}
+            allowDetect
+          />
+        </div>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleSwapLanguages}
-          disabled={sourceLang === "auto" || isTranslating}
-          className="shrink-0"
-        >
-          <ArrowLeftRight className="h-4 w-4" />
-        </Button>
+        <div className="flex justify-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleSwapLanguages}
+            disabled={sourceLang === "auto" || isTranslating}
+            className="shrink-0"
+          >
+            <ArrowLeftRight className="h-4 w-4" />
+          </Button>
+        </div>
 
-        <LanguageSelector
-          value={targetLang}
-          onChange={setTargetLang}
-          placeholder={t('language.target')}
-        />
+        <div className="flex justify-center lg:justify-start">
+          <LanguageSelector
+            value={targetLang}
+            onChange={setTargetLang}
+            placeholder={t('language.target')}
+          />
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
