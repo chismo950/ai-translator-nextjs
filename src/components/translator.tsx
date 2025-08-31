@@ -2,15 +2,15 @@
 
 import * as React from "react"
 import { useState, useEffect, useCallback } from "react"
-import { ArrowLeftRight, Copy, Trash2, Clipboard, Volume2, Loader2 } from "lucide-react"
+import { ArrowLeftRight, Copy, Trash2, Clipboard, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
+
 import { useToast } from "@/hooks/use-toast"
 import { useTurnstile } from "@/hooks/useTurnstile"
 import { useLanguage } from "@/hooks/useLanguage"
 import { getTurnstileSiteKey, postTranslate, getPass, TranslationResponse } from "@/lib/apiClient"
-import { TRANSLATION_CONFIG, TURNSTILE_CONFIG } from "@/lib/config"
+import { TRANSLATION_CONFIG } from "@/lib/config"
 import { LanguageSelector } from "./language-selector"
 import { CharacterCounter } from "./character-counter"
 import { AutoResizeTextarea } from "./auto-resize-textarea"
@@ -117,11 +117,11 @@ export function Translator() {
         refresh()
       }
 
-    } catch (error: any) {
+    } catch (error) {
       console.error("Translation error:", error)
 
       // Show Turnstile if verification failed
-      if (error.message.includes("400") || error.message.includes("403")) {
+      if (error instanceof Error && (error.message.includes("400") || error.message.includes("403"))) {
         setShowTurnstile(true)
         setMustVerify(true)
         refresh()
@@ -133,7 +133,7 @@ export function Translator() {
       } else {
         toast({
           title: t('error.generic'),
-          description: error.message || "Translation failed",
+          description: error instanceof Error ? error.message : "Translation failed",
           variant: "destructive",
         })
       }
@@ -158,7 +158,7 @@ export function Translator() {
         title: "Copied!",
         description: `${type === 'source' ? 'Source' : 'Translation'} copied to clipboard`,
       })
-    } catch (error) {
+    } catch {
       toast({
         title: "Copy failed",
         description: "Failed to copy to clipboard",
@@ -175,7 +175,7 @@ export function Translator() {
         title: "Pasted!",
         description: "Text pasted from clipboard",
       })
-    } catch (error) {
+    } catch {
       toast({
         title: "Paste failed",
         description: "Failed to paste from clipboard",

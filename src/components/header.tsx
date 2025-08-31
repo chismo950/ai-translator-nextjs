@@ -5,7 +5,8 @@ import { Globe } from "lucide-react"
 import { ThemeToggle } from "./theme-toggle"
 import { useLanguage } from "@/hooks/useLanguage"
 import { LanguageSelector } from "./language-selector"
-import { languages } from "@/lib/i18n"
+import { SupportedLanguage } from "@/lib/i18n"
+
 
 export function Header() {
   const { currentLanguage, setCurrentLanguage, t } = useLanguage()
@@ -30,7 +31,7 @@ export function Header() {
           <div className="md:hidden">
             <LanguageSelector
               value={currentLanguage}
-              onChange={(value) => setCurrentLanguage(value as any)}
+              onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
               placeholder="Lang"
               compact
             />
@@ -40,7 +41,7 @@ export function Header() {
           <div className="hidden md:block lg:hidden">
             <LanguageSelector
               value={currentLanguage}
-              onChange={(value) => setCurrentLanguage(value as any)}
+              onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
               placeholder="Language"
               compact
             />
@@ -52,7 +53,7 @@ export function Header() {
             <div className="min-w-[120px] max-w-[160px]">
               <LanguageSelector
                 value={currentLanguage}
-                onChange={(value) => setCurrentLanguage(value as any)}
+                onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
                 placeholder="Language"
               />
             </div>

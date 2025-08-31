@@ -18,7 +18,11 @@ export const metadata: Metadata = {
   title: "AI Translator",
   description: "Advanced AI-powered translation tool with multi-language support",
   keywords: ["translation", "AI", "multilingual", "translator"],
-  viewport: "width=device-width, initial-scale=1",
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

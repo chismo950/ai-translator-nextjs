@@ -3,10 +3,20 @@
 import { useCallback, useRef, useState } from "react";
 import { TURNSTILE_CONFIG } from "@/lib/config";
 
+interface TurnstileOptions {
+  sitekey: string;
+  action: string;
+  callback: (token: string) => void;
+  "expired-callback": () => void;
+  "error-callback": () => void;
+  theme: string;
+  size: string;
+}
+
 declare global {
   interface Window {
     turnstile?: {
-      render: (el: HTMLElement, opts: any) => string | number;
+      render: (el: HTMLElement, opts: TurnstileOptions) => string | number;
       reset: (id?: string | number) => void;
     };
   }

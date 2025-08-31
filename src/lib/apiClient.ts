@@ -1,5 +1,5 @@
 // API client with Turnstile pass management
-import { getApiBaseUrl, getFullApiUrl, API_CONFIG } from "./config";
+import { getFullApiUrl, API_CONFIG } from "./config";
 
 let passToken: string | null = null;
 
@@ -13,10 +13,6 @@ export function clearPass() {
 
 export function getPass() {
   return passToken;
-}
-
-function getApiBase(): string {
-  return getApiBaseUrl();
 }
 
 /**
@@ -53,7 +49,6 @@ export async function postTranslate(
     getTurnstileToken: () => string | null; // provide current Turnstile token (if any)
   }
 ) {
-  const base = getApiBase();
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     Accept: "application/json",
