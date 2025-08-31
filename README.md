@@ -2,6 +2,12 @@
 
 A beautiful, responsive AI translation interface built with Next.js 15, TypeScript, and shadcn/ui. Features Google Translate-like design with Cloudflare Turnstile integration, multi-language support, and dark/light theme switching.
 
+## 🌐 Live Demo
+
+Experience the AI Translator in action: **[https://translate.english-dictionary.app/](https://translate.english-dictionary.app/)**
+
+> 🎯 Try the live demo to see all features including multi-language support, dark/light themes, and seamless translation experience.
+
 ## ✨ Features
 
 - 🌐 **Multi-language Support** - Interface available in 10 languages with automatic system language detection
@@ -235,6 +241,9 @@ export const API_CONFIG = {
 npx vercel --prod
 ```
 
+**Example Deployment:**
+See the live production deployment at [https://translate.english-dictionary.app/](https://translate.english-dictionary.app/) for reference.
+
 **Netlify:**
 
 ```bash
@@ -339,6 +348,20 @@ const { toast } = useToast();
 3. Make your changes
 4. Add tests if applicable
 5. Submit a pull request
+
+## 🌟 Demo & Examples
+
+### Live Demo
+
+Check out the fully functional demo at [https://translate.english-dictionary.app/](https://translate.english-dictionary.app/) to experience:
+
+- **Real-time Translation**: Powered by advanced AI models
+- **Multi-language Interface**: Automatic system language detection
+- **Responsive Design**: Seamless experience across devices
+- **Theme Switching**: Dark/light mode with system preference
+- **Cloudflare Turnstile**: Security verification in action
+
+This demo showcases all the features implemented in this repository and serves as a reference for successful deployment.
 
 ## 📄 License
 
