@@ -252,7 +252,7 @@ export function Translator() {
             maxLength={MAX_CHARACTERS}
             minRows={4}
             maxRows={15}
-            className="border-0 p-0 focus-visible:ring-0 text-base resize-none"
+            className="border-0 p-3 focus-visible:ring-0 text-base resize-none"
           />
 
           <div className="flex items-center gap-2 pt-2">
@@ -302,7 +302,7 @@ export function Translator() {
             readOnly
             minRows={4}
             maxRows={15}
-            className="border-0 p-0 focus-visible:ring-0 text-base resize-none bg-transparent"
+            className="border-0 p-3 focus-visible:ring-0 text-base resize-none bg-transparent"
           />
 
           <div className="flex items-center gap-2 pt-2">
