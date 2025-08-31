@@ -196,9 +196,9 @@ export function Translator() {
   }, [siteKey])
 
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 space-y-4">
+    <div className="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl mx-auto p-4 lg:p-6 space-y-4 lg:space-y-6">
       {/* Language Selection */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-3 lg:gap-4 lg:items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-3 lg:gap-6 lg:items-center">
         <div className="flex justify-center lg:justify-end">
           <LanguageSelector
             value={sourceLang}
@@ -229,7 +229,7 @@ export function Translator() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
         {/* Source Text */}
         <Card className="p-4 space-y-3">
           <div className="flex items-center justify-between">
@@ -251,7 +251,7 @@ export function Translator() {
             placeholder={t('input.placeholder')}
             maxLength={MAX_CHARACTERS}
             minRows={4}
-            maxRows={12}
+            maxRows={15}
             className="border-0 p-0 focus-visible:ring-0 text-base resize-none"
           />
 
@@ -301,7 +301,7 @@ export function Translator() {
             placeholder={t('output.placeholder')}
             readOnly
             minRows={4}
-            maxRows={12}
+            maxRows={15}
             className="border-0 p-0 focus-visible:ring-0 text-base resize-none bg-transparent"
           />
 
