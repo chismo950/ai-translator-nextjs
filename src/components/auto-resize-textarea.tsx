@@ -30,8 +30,17 @@ export const AutoResizeTextarea = React.forwardRef<
     const minHeight = lineHeight * minRows
     const maxHeight = lineHeight * maxRows
 
-    const newHeight = Math.min(Math.max(textarea.scrollHeight, minHeight), maxHeight)
+    const contentHeight = textarea.scrollHeight
+    const newHeight = Math.min(Math.max(contentHeight, minHeight), maxHeight)
+
     textarea.style.height = `${newHeight}px`
+
+    // Enable/disable scrolling based on content height
+    if (contentHeight > maxHeight) {
+      textarea.style.overflowY = 'auto'
+    } else {
+      textarea.style.overflowY = 'hidden'
+    }
   }, [combinedRef, minRows, maxRows])
 
   useEffect(() => {
@@ -41,7 +50,7 @@ export const AutoResizeTextarea = React.forwardRef<
   return (
     <Textarea
       ref={combinedRef}
-      className={cn("resize-none overflow-hidden", className)}
+      className={cn("resize-none", className)}
       onInput={adjustHeight}
       {...props}
     />
