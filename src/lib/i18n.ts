@@ -10,7 +10,8 @@ export type SupportedLanguage =
   | "ru"
   | "it";
 
-export const languages: Record<SupportedLanguage, string> = {
+// UI language names for the app interface (not translation options)
+export const uiLanguages: Record<SupportedLanguage, string> = {
   en: "English",
   zh: "中文",
   es: "Español",
@@ -254,7 +255,7 @@ export function getSystemLanguage(): SupportedLanguage {
   const systemLang = navigator.language.toLowerCase();
   const langCode = systemLang.split("-")[0] as SupportedLanguage;
 
-  return Object.keys(languages).includes(langCode) ? langCode : "en";
+  return Object.keys(uiLanguages).includes(langCode) ? langCode : "en";
 }
 
 export function getTranslation(key: string, lang: SupportedLanguage): string {

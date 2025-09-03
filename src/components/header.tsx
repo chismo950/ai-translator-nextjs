@@ -5,7 +5,7 @@ import { Globe } from "lucide-react"
 import { ThemeToggle } from "./theme-toggle"
 import { useLanguage } from "@/hooks/useLanguage"
 import { LanguageSelector } from "./language-selector"
-import { SupportedLanguage } from "@/lib/i18n"
+import { SupportedLanguage, uiLanguages } from "@/lib/i18n"
 
 
 export function Header() {
@@ -33,6 +33,7 @@ export function Header() {
               value={currentLanguage}
               onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
               placeholder="Lang"
+              options={uiLanguages}
               compact
             />
           </div>
@@ -43,6 +44,7 @@ export function Header() {
               value={currentLanguage}
               onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
               placeholder="Language"
+              options={uiLanguages}
               compact
             />
           </div>
@@ -55,6 +57,7 @@ export function Header() {
                 value={currentLanguage}
                 onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
                 placeholder="Language"
+                options={uiLanguages}
               />
             </div>
           </div>

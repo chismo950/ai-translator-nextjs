@@ -9,7 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { languages, SupportedLanguage } from "@/lib/i18n"
+import { uiLanguages } from "@/lib/i18n"
 
 interface LanguageSelectorProps {
   value: string
@@ -18,6 +18,7 @@ interface LanguageSelectorProps {
   allowDetect?: boolean
   disabled?: boolean
   compact?: boolean
+  options?: Record<string, string>
 }
 
 export function LanguageSelector({
@@ -26,7 +27,8 @@ export function LanguageSelector({
   placeholder = "Select language",
   allowDetect = false,
   disabled = false,
-  compact = false
+  compact = false,
+  options = uiLanguages,
 }: LanguageSelectorProps) {
   const getDisplayText = () => {
     if (!value) return placeholder
@@ -36,7 +38,7 @@ export function LanguageSelector({
     if (compact) {
       return value.toUpperCase()
     }
-    return languages[value as SupportedLanguage] || value
+    return options[value] || value
   }
 
   return (
@@ -63,7 +65,7 @@ export function LanguageSelector({
             Detect language
           </DropdownMenuItem>
         )}
-        {Object.entries(languages).map(([code, name]) => (
+        {Object.entries(options).map(([code, name]) => (
           <DropdownMenuItem
             key={code}
             onSelect={() => onChange(code)}

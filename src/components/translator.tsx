@@ -12,7 +12,7 @@ import { useLanguage } from "@/hooks/useLanguage"
 import { getTurnstileSiteKey, postTranslate, getPass, TranslationResponse } from "@/lib/apiClient"
 import { TRANSLATION_CONFIG } from "@/lib/config"
 import { LanguageSelector } from "./language-selector"
-import { languages, SupportedLanguage } from "@/lib/i18n"
+import { translationLanguages } from "@/lib/translation-languages"
 import { CharacterCounter } from "./character-counter"
 import { AutoResizeTextarea } from "./auto-resize-textarea"
 import { useTheme } from "next-themes"
@@ -29,7 +29,7 @@ export function Translator() {
   const [sourceText, setSourceText] = useState("")
   const [targetText, setTargetText] = useState("")
   const [sourceLang, setSourceLang] = useState("auto")
-  const [targetLang, setTargetLang] = useState("en")
+  const [targetLang, setTargetLang] = useState("en-US")
   const [isTranslating, setIsTranslating] = useState(false)
 
   // Turnstile state
@@ -46,26 +46,117 @@ export function Translator() {
     target: "translator_target_lang",
   }), [])
 
-  const isValidLang = useCallback((code: string): code is SupportedLanguage => {
-    return Object.prototype.hasOwnProperty.call(languages, code)
+  const isValidLang = useCallback((code: string): boolean => {
+    return Object.prototype.hasOwnProperty.call(translationLanguages, code)
+  }, [])
+
+  // Legacy generic -> region code migration
+  const migrateLegacyCode = useCallback((code: string): string => {
+    const map: Record<string, string> = {
+      // Normalize to current keys
+      // English + variants (keep regions)
+      en: "en-US",
+      "en_us": "en-US",
+      // Chinese (keep regions)
+      zh: "zh-CN",
+      // Spanish (keep regions)
+      es: "es-ES",
+      // Portuguese (keep regions)
+      pt: "pt-PT",
+      // Norwegian now uses base language code
+      "nb-NO": "no",
+      // Collapse region where not needed
+      de: "de",
+      "de-DE": "de",
+      it: "it",
+      "it-IT": "it",
+      ja: "ja",
+      "ja-JP": "ja",
+      ko: "ko",
+      "ko-KR": "ko",
+      ru: "ru",
+      "ru-RU": "ru",
+      sv: "sv",
+      "sv-SE": "sv",
+      tr: "tr",
+      "tr-TR": "tr",
+      uk: "uk",
+      "uk-UA": "uk",
+      vi: "vi",
+      "vi-VN": "vi",
+      pl: "pl",
+      "pl-PL": "pl",
+      ro: "ro",
+      "ro-RO": "ro",
+      sk: "sk",
+      "sk-SK": "sk",
+      fi: "fi",
+      "fi-FI": "fi",
+      el: "el",
+      "el-GR": "el",
+      he: "he",
+      "he-IL": "he",
+      hi: "hi",
+      "hi-IN": "hi",
+      hu: "hu",
+      "hu-HU": "hu",
+      id: "id",
+      "id-ID": "id",
+      ms: "ms",
+      "ms-MY": "ms",
+      nl: "nl",
+      "nl-NL": "nl",
+      da: "da",
+      "da-DK": "da",
+      cs: "cs",
+      "cs-CZ": "cs",
+      hr: "hr",
+      "hr-HR": "hr",
+      ca: "ca",
+      "ca-ES": "ca",
+      ar: "ar",
+      "ar-SA": "ar",
+      // French keeps regions
+      fr: "fr-FR",
+      // Explicit keeps as-is for regional variants that still exist
+      "fr-FR": "fr-FR",
+      "fr-CA": "fr-CA",
+      "pt-PT": "pt-PT",
+      "pt-BR": "pt-BR",
+      "es-ES": "es-ES",
+      "es-MX": "es-MX",
+      "zh-CN": "zh-CN",
+      "zh-TW": "zh-TW",
+      "en-US": "en-US",
+      "en-GB": "en-GB",
+      "en-CA": "en-CA",
+      "en-AU": "en-AU",
+    }
+    return map[code] || code
   }, [])
 
   // Load persisted language selections
   useEffect(() => {
     try {
-      const savedSource = localStorage.getItem(STORAGE_KEYS.source)
-      const savedTarget = localStorage.getItem(STORAGE_KEYS.target)
+      let savedSource = localStorage.getItem(STORAGE_KEYS.source)
+      let savedTarget = localStorage.getItem(STORAGE_KEYS.target)
 
-      if (savedSource && (savedSource === "auto" || isValidLang(savedSource))) {
-        setSourceLang(savedSource)
+      if (savedSource) {
+        if (savedSource !== "auto") savedSource = migrateLegacyCode(savedSource)
+        if (savedSource === "auto" || isValidLang(savedSource)) {
+          setSourceLang(savedSource)
+        }
       }
-      if (savedTarget && isValidLang(savedTarget)) {
-        setTargetLang(savedTarget)
+      if (savedTarget) {
+        savedTarget = migrateLegacyCode(savedTarget)
+        if (isValidLang(savedTarget)) {
+          setTargetLang(savedTarget)
+        }
       }
     } catch {
       // ignore storage errors (e.g., SSR or privacy mode)
     }
-  }, [STORAGE_KEYS.source, STORAGE_KEYS.target, isValidLang])
+  }, [STORAGE_KEYS.source, STORAGE_KEYS.target, isValidLang, migrateLegacyCode])
 
   // Persist language selections
   useEffect(() => {
@@ -251,6 +342,7 @@ export function Translator() {
             value={sourceLang}
             onChange={setSourceLang}
             placeholder={t('language.source')}
+            options={translationLanguages}
             allowDetect
           />
         </div>
@@ -272,6 +364,7 @@ export function Translator() {
             value={targetLang}
             onChange={setTargetLang}
             placeholder={t('language.target')}
+            options={translationLanguages}
           />
         </div>
       </div>
