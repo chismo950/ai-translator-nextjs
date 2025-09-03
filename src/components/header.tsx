@@ -32,7 +32,7 @@ export function Header() {
             <LanguageSelector
               value={currentLanguage}
               onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
-              placeholder="Lang"
+              placeholder={t('ui.language.short')}
               options={uiLanguages}
               compact
             />
@@ -43,7 +43,7 @@ export function Header() {
             <LanguageSelector
               value={currentLanguage}
               onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
-              placeholder="Language"
+              placeholder={t('ui.language')}
               options={uiLanguages}
               compact
             />
@@ -51,12 +51,12 @@ export function Header() {
 
           {/* Large screens: Full language selector with label */}
           <div className="hidden lg:flex items-center gap-2">
-            <span className="text-sm text-muted-foreground whitespace-nowrap">Language:</span>
+            <span className="text-sm text-muted-foreground whitespace-nowrap">{t('ui.language')}:</span>
             <div className="min-w-[120px] max-w-[160px]">
               <LanguageSelector
                 value={currentLanguage}
                 onChange={(value) => setCurrentLanguage(value as SupportedLanguage)}
-                placeholder="Language"
+                placeholder={t('ui.language')}
                 options={uiLanguages}
               />
             </div>

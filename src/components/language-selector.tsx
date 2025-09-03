@@ -10,6 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { uiLanguages } from "@/lib/i18n"
+import { useLanguage } from "@/hooks/useLanguage"
 
 interface LanguageSelectorProps {
   value: string
@@ -30,13 +31,14 @@ export function LanguageSelector({
   compact = false,
   options = uiLanguages,
 }: LanguageSelectorProps) {
+  const { t } = useLanguage()
   const getDisplayText = () => {
-    if (!value) return placeholder
+    if (!value) return placeholder || t('language.select')
     if (value === "auto" && allowDetect) {
-      return compact ? "Auto" : "Detect language"
+      return compact ? t('language.auto') : t('language.detect')
     }
     if (compact) {
-      return value.toUpperCase()
+      return options[value] || value.toUpperCase()
     }
     return options[value] || value
   }
@@ -62,7 +64,7 @@ export function LanguageSelector({
             onSelect={() => onChange("auto")}
             className={value === "auto" ? "bg-accent" : ""}
           >
-            Detect language
+            {t('language.detect')}
           </DropdownMenuItem>
         )}
         {Object.entries(options).map(([code, name]) => (

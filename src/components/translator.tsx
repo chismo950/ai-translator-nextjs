@@ -194,7 +194,7 @@ export function Translator() {
     if (!sourceText.trim()) {
       toast({
         title: t('error.generic'),
-        description: "Please enter text to translate",
+        description: t('error.empty'),
         variant: "destructive",
       })
       return
@@ -203,7 +203,7 @@ export function Translator() {
     if (sourceText.length > MAX_CHARACTERS) {
       toast({
         title: t('character.limit'),
-        description: `Text exceeds ${MAX_CHARACTERS} characters`,
+        description: t('character.limit'),
         variant: "destructive",
       })
       return
@@ -222,7 +222,7 @@ export function Translator() {
       setMustVerify(true)
       toast({
         title: t('turnstile.verify'),
-        description: "Please complete the verification to continue",
+        description: t('turnstile.verify'),
       })
       return
     }
@@ -264,7 +264,7 @@ export function Translator() {
         refresh()
         toast({
           title: t('error.turnstile'),
-          description: "Please verify again to continue",
+          description: t('turnstile.verify'),
           variant: "destructive",
         })
       } else {
@@ -292,13 +292,13 @@ export function Translator() {
     try {
       await navigator.clipboard.writeText(text)
       toast({
-        title: "Copied!",
-        description: `${type === 'source' ? 'Source' : 'Translation'} copied to clipboard`,
+        title: t('toast.copied.title'),
+        description: type === 'source' ? t('toast.copied.source') : t('toast.copied.target'),
       })
     } catch {
       toast({
-        title: "Copy failed",
-        description: "Failed to copy to clipboard",
+        title: t('toast.copyFailed.title'),
+        description: t('toast.copyFailed.desc'),
         variant: "destructive",
       })
     }
@@ -309,13 +309,13 @@ export function Translator() {
       const text = await navigator.clipboard.readText()
       setSourceText(text)
       toast({
-        title: "Pasted!",
-        description: "Text pasted from clipboard",
+        title: t('toast.pasted.title'),
+        description: t('toast.pasted.desc'),
       })
     } catch {
       toast({
-        title: "Paste failed",
-        description: "Failed to paste from clipboard",
+        title: t('toast.pasteFailed.title'),
+        description: t('toast.pasteFailed.desc'),
         variant: "destructive",
       })
     }
