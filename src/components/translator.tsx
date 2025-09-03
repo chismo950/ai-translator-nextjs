@@ -118,6 +118,12 @@ export function Translator() {
       return
     }
 
+    // If source and target languages are the same, no API call needed
+    if (sourceLang !== "auto" && sourceLang === targetLang) {
+      setTargetText(sourceText)
+      return
+    }
+
     // Check if we need Turnstile verification
     const hasPass = getPass()
     if (!hasPass && !token) {
