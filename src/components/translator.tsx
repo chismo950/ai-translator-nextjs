@@ -12,6 +12,7 @@ import { useLanguage } from "@/hooks/useLanguage"
 import { getTurnstileSiteKey, postTranslate, getPass, TranslationResponse } from "@/lib/apiClient"
 import { TRANSLATION_CONFIG } from "@/lib/config"
 import { LanguageSelector } from "./language-selector"
+import { languages, SupportedLanguage } from "@/lib/i18n"
 import { CharacterCounter } from "./character-counter"
 import { AutoResizeTextarea } from "./auto-resize-textarea"
 import { useTheme } from "next-themes"
@@ -38,6 +39,45 @@ export function Translator() {
   const [mustVerify, setMustVerify] = useState(false)
 
   const { containerRef, render, refresh, token, ready, loading, isVerified } = useTurnstile()
+
+  // Local storage keys
+  const STORAGE_KEYS = React.useMemo(() => ({
+    source: "translator_source_lang",
+    target: "translator_target_lang",
+  }), [])
+
+  const isValidLang = useCallback((code: string): code is SupportedLanguage => {
+    return Object.prototype.hasOwnProperty.call(languages, code)
+  }, [])
+
+  // Load persisted language selections
+  useEffect(() => {
+    try {
+      const savedSource = localStorage.getItem(STORAGE_KEYS.source)
+      const savedTarget = localStorage.getItem(STORAGE_KEYS.target)
+
+      if (savedSource && (savedSource === "auto" || isValidLang(savedSource))) {
+        setSourceLang(savedSource)
+      }
+      if (savedTarget && isValidLang(savedTarget)) {
+        setTargetLang(savedTarget)
+      }
+    } catch {
+      // ignore storage errors (e.g., SSR or privacy mode)
+    }
+  }, [STORAGE_KEYS.source, STORAGE_KEYS.target, isValidLang])
+
+  // Persist language selections
+  useEffect(() => {
+    try {
+      localStorage.setItem(STORAGE_KEYS.source, sourceLang)
+      if (isValidLang(targetLang)) {
+        localStorage.setItem(STORAGE_KEYS.target, targetLang)
+      }
+    } catch {
+      // ignore storage errors
+    }
+  }, [sourceLang, targetLang, STORAGE_KEYS.source, STORAGE_KEYS.target, isValidLang])
 
   // Fetch Turnstile site key
   useEffect(() => {
