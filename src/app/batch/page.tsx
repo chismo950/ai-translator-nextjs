@@ -1,17 +1,17 @@
 "use client"
 
 import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Translator } from "@/components/translator";
 import { useLanguage } from "@/hooks/useLanguage";
+import { BatchTranslator } from "@/components/batch-translator";
+import { Footer } from "@/components/footer";
 
-export default function Home() {
-  const { t } = useLanguage()
+export default function BatchPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main className="container mx-auto py-8">
-        <Translator />
+        <BatchTranslator />
       </main>
       <Footer />
     </div>

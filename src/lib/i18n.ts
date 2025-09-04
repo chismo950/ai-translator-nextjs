@@ -28,6 +28,8 @@ export const translations: Record<SupportedLanguage, Record<string, string>> = {
   en: {
     "app.title": "AI Translator",
     "app.description": "Translate text between languages using AI",
+    "nav.home": "Home",
+    "nav.batch": "Batch Translate",
     "ui.language": "Language",
     "ui.language.short": "Lang",
     "input.placeholder": "Enter text to translate...",
@@ -65,6 +67,8 @@ export const translations: Record<SupportedLanguage, Record<string, string>> = {
   zh: {
     "app.title": "AI 翻译器",
     "app.description": "使用 AI 在不同语言间翻译文本",
+    "nav.home": "主页",
+    "nav.batch": "批量翻译",
     "ui.language": "语言",
     "ui.language.short": "语",
     "input.placeholder": "输入要翻译的文本...",

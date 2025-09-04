@@ -2,7 +2,10 @@
 
 import * as React from "react"
 import { Globe } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { ThemeToggle } from "./theme-toggle"
+import { Button } from "@/components/ui/button"
 import { useLanguage } from "@/hooks/useLanguage"
 import { LanguageSelector } from "./language-selector"
 import { SupportedLanguage, uiLanguages } from "@/lib/i18n"
@@ -10,16 +13,22 @@ import { SupportedLanguage, uiLanguages } from "@/lib/i18n"
 
 export function Header() {
   const { currentLanguage, setCurrentLanguage, t } = useLanguage()
+  const pathname = usePathname()
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Left section - Logo and title */}
         <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1 max-w-[60%] lg:max-w-[70%]">
-          <div className="flex items-center gap-2 min-w-0">
-            <Globe className="h-6 w-6 text-primary shrink-0" />
-            <h1 className="text-lg sm:text-xl font-bold truncate">{t('app.title')}</h1>
-          </div>
+        <Link
+          href="/"
+          aria-label={t('nav.home')}
+          title={t('nav.home')}
+          className="flex items-center gap-2 min-w-0"
+        >
+          <Globe className="h-6 w-6 text-primary shrink-0" />
+          <h1 className="text-lg sm:text-xl font-bold truncate">{t('app.title')}</h1>
+        </Link>
           <div className="hidden xl:block text-sm text-muted-foreground truncate">
             {t('app.description')}
           </div>
@@ -27,6 +36,11 @@ export function Header() {
 
         {/* Right section - Controls */}
         <div className="flex items-center gap-2 lg:gap-3 shrink-0">
+          {/* Nav: link to Batch */}
+          <Button asChild variant={pathname === "/batch" ? "default" : "outline"} size="sm">
+            <Link href="/batch">{t('nav.batch')}</Link>
+          </Button>
+
           {/* Mobile: Compact language selector */}
           <div className="md:hidden">
             <LanguageSelector
