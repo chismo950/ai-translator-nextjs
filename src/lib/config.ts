@@ -25,8 +25,8 @@ export const API_CONFIG = {
 // Translation Configuration
 export const TRANSLATION_CONFIG = {
   // Character limits
-  MAX_CHARACTERS: 10000,
-  SOFT_LIMIT: 8000,
+  MAX_CHARACTERS: 20000,
+  SOFT_LIMIT: 18000,
 
   // Text area configuration
   TEXTAREA: {
