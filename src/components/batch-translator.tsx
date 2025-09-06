@@ -24,9 +24,10 @@ import { useToast } from "@/hooks/use-toast"
 import { useTurnstile } from "@/hooks/useTurnstile"
 import { useLanguage } from "@/hooks/useLanguage"
 
-import { getTurnstileSiteKey, getPass, postTranslate, TranslationResponse } from "@/lib/apiClient"
+import { getPass, postTranslate, TranslationResponse } from "@/lib/apiClient"
 import { TRANSLATION_CONFIG } from "@/lib/config"
 import { translationLanguages } from "@/lib/translation-languages"
+import { useTurnstileSiteKey } from "@/hooks/useTurnstileSiteKey"
 
 const MAX_CHARACTERS = TRANSLATION_CONFIG.MAX_CHARACTERS
 const SOFT_LIMIT = TRANSLATION_CONFIG.SOFT_LIMIT
@@ -47,12 +48,11 @@ export function BatchTranslator() {
   const [results, setResults] = useState<Record<string, string>>({})
 
   // Turnstile state
-  const [siteKey, setSiteKey] = useState("")
-  const [headerName, setHeaderName] = useState("CF-Turnstile-Token")
   const [showTurnstile, setShowTurnstile] = useState(false)
   const [mustVerify, setMustVerify] = useState(false)
 
   const { containerRef, render, refresh, token, ready, loading, isVerified } = useTurnstile()
+  const { siteKey, headerName } = useTurnstileSiteKey()
 
   // Storage keys (scoped for batch)
   const STORAGE_KEYS = useMemo(() => ({
@@ -94,18 +94,7 @@ export function BatchTranslator() {
     }
   }, [sourceLang, targets, STORAGE_KEYS.source, STORAGE_KEYS.targets])
 
-  // Fetch Turnstile site key
-  useEffect(() => {
-    getTurnstileSiteKey()
-      .then((data) => {
-        setSiteKey(data.siteKey)
-        setHeaderName(data.headerName || "CF-Turnstile-Token")
-      })
-      .catch(() => {
-        setSiteKey("")
-        setHeaderName("CF-Turnstile-Token")
-      })
-  }, [])
+  // Site key is handled by SWR hook
 
   // Render Turnstile when needed
   useEffect(() => {

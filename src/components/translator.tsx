@@ -9,13 +9,14 @@ import { Card } from "@/components/ui/card"
 import { useToast } from "@/hooks/use-toast"
 import { useTurnstile } from "@/hooks/useTurnstile"
 import { useLanguage } from "@/hooks/useLanguage"
-import { getTurnstileSiteKey, postTranslate, getPass, TranslationResponse } from "@/lib/apiClient"
+import { postTranslate, getPass, TranslationResponse } from "@/lib/apiClient"
 import { TRANSLATION_CONFIG } from "@/lib/config"
 import { LanguageSelector } from "./language-selector"
 import { translationLanguages } from "@/lib/translation-languages"
 import { CharacterCounter } from "./character-counter"
 import { AutoResizeTextarea } from "./auto-resize-textarea"
 import { useTheme } from "next-themes"
+import { useTurnstileSiteKey } from "@/hooks/useTurnstileSiteKey"
 
 const MAX_CHARACTERS = TRANSLATION_CONFIG.MAX_CHARACTERS
 const SOFT_LIMIT = TRANSLATION_CONFIG.SOFT_LIMIT
@@ -33,12 +34,11 @@ export function Translator() {
   const [isTranslating, setIsTranslating] = useState(false)
 
   // Turnstile state
-  const [siteKey, setSiteKey] = useState("")
-  const [headerName, setHeaderName] = useState("CF-Turnstile-Token")
   const [showTurnstile, setShowTurnstile] = useState(false)
   const [mustVerify, setMustVerify] = useState(false)
 
   const { containerRef, render, refresh, token, ready, loading, isVerified } = useTurnstile()
+  const { siteKey, headerName } = useTurnstileSiteKey()
 
   // Local storage keys
   const STORAGE_KEYS = React.useMemo(() => ({
@@ -170,18 +170,7 @@ export function Translator() {
     }
   }, [sourceLang, targetLang, STORAGE_KEYS.source, STORAGE_KEYS.target, isValidLang])
 
-  // Fetch Turnstile site key
-  useEffect(() => {
-    getTurnstileSiteKey()
-      .then((data) => {
-        setSiteKey(data.siteKey)
-        setHeaderName(data.headerName || "CF-Turnstile-Token")
-      })
-      .catch(() => {
-        setSiteKey("")
-        setHeaderName("CF-Turnstile-Token")
-      })
-  }, [])
+  // Site key is handled by SWR hook
 
   // Render Turnstile when needed
   useEffect(() => {
